@@ -1,0 +1,13 @@
+USE test;
+
+CREATE TEMPORARY TABLE temp SELECT people.birthday, people.sex, count(*) cnt FROM test.people GROUP BY  birthday, sex;
+
+CREATE TEMPORARY TABLE temp2 SELECT * FROM (SELECT  sex, max(cnt) cnt from temp group by sex) as mainmax;
+
+select * from temp,temp2 where temp.cnt = temp2.cnt AND temp.sex = temp2.sex;
+
+select * from temp order by cnt, sex;
+
+select * from temp where birthday order by birthday, sex;
+
+select YEAR(birthday) yr, SUM(cnt), sex from temp GROUP BY  yr, sex ;
